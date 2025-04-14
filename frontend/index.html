@@ -1,6 +1,17 @@
-<form id="donateForm" onsubmit="submitDonation(event)">
-    <label for="amount">Сума донату (грн):</label><br />
-    <input type="number" id="amount" name="amount" required /><br /><br />
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>Donor Attribution Test</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<form id="donateForm">
+    <h1>Зробіть донат</h1>
+
+    <label for="amount">Сума донату (грн):</label>
+    <input type="number" id="amount" name="amount" required />
 
     <input type="hidden" id="client_id" />
     <input type="hidden" id="utm_source" />
@@ -10,41 +21,6 @@
     <button type="submit">Задонатити</button>
 </form>
 
-<script>
-    const backendUrl = "https://donor-backend-jfpw.onrender.com/webhook";
-
-    function submitDonation(event) {
-        event.preventDefault();
-
-        const data = JSON.parse(localStorage.getItem("donor_session_data") || "{}");
-
-        const amount = parseFloat(document.getElementById("amount").value);
-        if (isNaN(amount) || amount <= 0) {
-            alert("Будь ласка, введіть коректну суму.");
-            return;
-        }
-
-        const payload = {
-            client_id: data.client_id || "",
-            utm_source: data.utm_source || "",
-            utm_medium: data.utm_medium || "",
-            utm_campaign: data.utm_campaign || "",
-            amount: amount
-        };
-
-        fetch(backendUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-        })
-            .then(res => res.json())
-            .then(data => {
-                alert("Донат збережено! ✅ Перевір лог");
-                console.log(data);
-            })
-            .catch(err => {
-                alert("Помилка 😢");
-                console.error(err);
-            });
-    }
-</script>
+<script src="script.js"></script>
+</body>
+</html>
