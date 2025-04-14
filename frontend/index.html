@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>Donor Funnel Tracker</title>
+</head>
+<body>
+<h1>Donate Page</h1>
+
+<p>Ваш донат допоможе!</p>
+<form action="https://fake-wayforpay.com/pay" method="POST" onsubmit="injectSessionData(event)">
+    <input type="hidden" name="client_id" id="client_id" />
+    <input type="hidden" name="utm_source" id="utm_source" />
+    <input type="hidden" name="utm_medium" id="utm_medium" />
+    <input type="hidden" name="utm_campaign" id="utm_campaign" />
+    <button type="submit">Задонатити</button>
+</form>
+
+<script>
+    (function () {
+        const getParam = (name) => new URLSearchParams(window.location.search).get(name);
+        const storageKey = 'donor_session_data';
+
+        const sessionData = {
+            utm_source: getParam('utm_source'),
+            utm_medium: getParam('utm_medium'),
+            utm_campaign: getParam('utm_campaign'),
+            gclid: getParam('gclid'),
+            fbclid: getParam('fbclid'),
+            referrer: document.referrer || null,
+            timestamp: new Date().toISOString(),
+            client_id: crypto.randomUUID(),
+        };
+
+        if (!localStorage.getItem(storageKey)) {
+            localStorage.setItem(storageKey, JSON.stringify(sessionData));
+            console.log('Session saved:', sessionData);
+        }
+    })();
+
+    function injectSessionData(event) {
+        const data = JSON.parse(localStorage.getItem('donor_session_data') || '{}');
+        document.getElementById('client_id').value = data.client_id || '';
+        document.getElementById('utm_source').value = data.utm_source || '';
+        document.getElementById('utm_medium').value = data.utm_medium || '';
+        document.getElementById('utm_campaign').value = data.utm_campaign || '';
+    }
+</script>
+</body>
+</html>
