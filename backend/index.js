@@ -32,6 +32,11 @@ app.get('/events', (req, res) => {
     res.json(receivedDonations);
 });
 
+app.get('/reset', (req, res) => {
+    receivedDonations.length = 0;
+    res.json({ status: 'cleared' });
+});
+
 app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
