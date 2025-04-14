@@ -1,4 +1,7 @@
 # Ignore Node.js dependencies
 backend/node_modules/
 
+# IDE settings
+.idea/
+
 .DS_Store
